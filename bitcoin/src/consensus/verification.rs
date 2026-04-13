@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: CC0-1.0
 
-use crate::consensus::encode::{MAX_COMPACT_SIZE, ReadExt, WriteExt};
+use crate::consensus::encode::{ReadExt, WriteExt, MAX_COMPACT_SIZE};
 use crate::consensus::{Error, ParseError};
 use crate::io::Cursor;
 
@@ -20,7 +20,7 @@ fn check_compact_size_roundtrip() {
 #[kani::unwind(10)]
 #[kani::proof]
 fn check_oversized_compact_size_is_rejected() {
-    let x: u64 = kani::any(); 
+    let x: u64 = kani::any();
     kani::assume(x > MAX_COMPACT_SIZE as u64);
     let mut bytes = [0u8; 9];
     let mut cursor = Cursor::new(&mut bytes[..]);
