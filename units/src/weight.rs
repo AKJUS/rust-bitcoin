@@ -255,7 +255,7 @@ crate::internal_macros::impl_op_for_references! {
     impl ops::Div<NonZeroU64> for Weight {
         type Output = Weight;
 
-        fn div(self, rhs: NonZeroU64) -> Self::Output{ Self::from_wu(self.to_wu() / rhs.get()) }
+        fn div(self, rhs: NonZeroU64) -> Self::Output{ Self::from_wu(self.to_wu() / rhs) }
     }
 }
 crate::internal_macros::impl_add_assign!(Weight);

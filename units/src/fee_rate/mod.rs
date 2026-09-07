@@ -255,7 +255,7 @@ crate::internal_macros::impl_op_for_references! {
     impl ops::Div<NonZeroU64> for FeeRate {
         type Output = FeeRate;
 
-        fn div(self, rhs: NonZeroU64) -> Self::Output{ Self::from_sat_per_mvb(self.to_sat_per_mvb() / rhs.get()) }
+        fn div(self, rhs: NonZeroU64) -> Self::Output{ Self::from_sat_per_mvb(self.to_sat_per_mvb() / rhs) }
     }
 }
 crate::internal_macros::impl_add_assign!(FeeRate);
