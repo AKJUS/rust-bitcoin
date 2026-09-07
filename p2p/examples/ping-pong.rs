@@ -44,35 +44,34 @@ fn main() {
     let version_message = build_version_message(remote_socket);
     let version_message = message::V1NetworkMessage::new(magic, version_message);
 
-    if let Ok(mut stream) = TcpStream::connect(remote_socket) {
-        encoding::encode_to_writer(&version_message, &mut stream).unwrap();
-
-        let read_stream = stream.try_clone().unwrap();
-        let mut stream_reader = BufReader::new(read_stream);
-        loop {
-            let msg =
-                encoding::decode_from_read::<V1NetworkMessage, _>(&mut stream_reader).unwrap();
-
-            match msg.payload() {
-                message::NetworkMessage::Ping(ping) => {
-                    println!("got ping {:?}", ping);
-                    let pong = Pong::from_ping(ping);
-                    println!("send pong {:?}", pong);
-                    let net_msg = V1NetworkMessage::new(magic, NetworkMessage::Pong(pong));
-                    encoding::encode_to_writer(&net_msg, &mut stream).unwrap();
-                }
-                message::NetworkMessage::SendCmpct(_) => {}
-                message::NetworkMessage::Verack => {}
-                message::NetworkMessage::Version(_v) => {
-                    let verack = V1NetworkMessage::new(magic, NetworkMessage::Verack);
-                    encoding::encode_to_writer(&verack, &mut stream).unwrap();
-                }
-                message::NetworkMessage::FeeFilter(_f) => {}
-                _ => unimplemented!("{:?}", msg.payload()),
-            }
-        }
-    } else {
+    let Ok(mut stream) = TcpStream::connect(remote_socket) else {
         eprintln!("failed to open connection");
+        return;
+    };
+    encoding::encode_to_writer(&version_message, &mut stream).unwrap();
+
+    let read_stream = stream.try_clone().unwrap();
+    let mut stream_reader = BufReader::new(read_stream);
+    loop {
+        let msg = encoding::decode_from_read::<V1NetworkMessage, _>(&mut stream_reader).unwrap();
+
+        match msg.payload() {
+            message::NetworkMessage::Ping(ping) => {
+                println!("got ping {:?}", ping);
+                let pong = Pong::from_ping(ping);
+                println!("send pong {:?}", pong);
+                let net_msg = V1NetworkMessage::new(magic, NetworkMessage::Pong(pong));
+                encoding::encode_to_writer(&net_msg, &mut stream).unwrap();
+            }
+            message::NetworkMessage::SendCmpct(_) => {}
+            message::NetworkMessage::Verack => {}
+            message::NetworkMessage::Version(_v) => {
+                let verack = V1NetworkMessage::new(magic, NetworkMessage::Verack);
+                encoding::encode_to_writer(&verack, &mut stream).unwrap();
+            }
+            message::NetworkMessage::FeeFilter(_f) => {}
+            _ => unimplemented!("{:?}", msg.payload()),
+        }
     }
 }
 
