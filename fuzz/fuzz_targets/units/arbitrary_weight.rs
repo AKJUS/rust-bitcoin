@@ -39,12 +39,10 @@ fn do_test(data: &[u8]) {
     }
 
     // Constructors that return a Weight
-    for constructor in [Weight::from_wu] {
-        if let Ok(val) = u.arbitrary() {
-            constructor(val);
-        } else {
-            return;
-        }
+    if let Ok(val) = u.arbitrary() {
+        Weight::from_wu(val);
+    } else {
+        return;
     }
 
     // Constructors that return an Option<Weight>
