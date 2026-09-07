@@ -27,32 +27,31 @@ use super::{HashEngine, Midstate, BLOCK_SIZE};
 
 #[cfg(feature = "cpufeatures")]
 #[cfg(target_arch = "aarch64")]
-// cpufeatures crate internally uses `u8::max_value()` which will be deprecated.
+// cpufeatures crate internally uses deprecated `u8::max_value()`.
 // See: https://docs.rs/cpufeatures/0.2.17/src/cpufeatures/lib.rs.html#161
-#[allow(deprecated_in_future)]
+#[allow(deprecated)]
 mod cpuid_sha256_aarch64 {
     cpufeatures::new!(inner, "sha2");
     pub fn get() -> bool { inner::get() }
 }
 #[cfg(feature = "cpufeatures")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-// cpufeatures crate internally uses `u8::max_value()` which will be deprecated.
 // See: https://docs.rs/cpufeatures/0.2.17/src/cpufeatures/lib.rs.html#161
-#[allow(deprecated_in_future)]
+#[allow(deprecated)]
 mod cpuid_sha256_x86 {
     cpufeatures::new!(inner, "sha", "sse2", "ssse3", "sse4.1");
     pub fn get() -> bool { inner::get() }
 }
 #[cfg(feature = "cpufeatures")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-#[allow(deprecated_in_future)]
+#[allow(deprecated)]
 mod cpuid_sse41_x86 {
     cpufeatures::new!(inner, "sse2", "ssse3", "sse4.1");
     pub fn get() -> bool { inner::get() }
 }
 #[cfg(feature = "cpufeatures")]
 #[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
-#[allow(deprecated_in_future)]
+#[allow(deprecated)]
 mod cpuid_avx2_x86 {
     cpufeatures::new!(inner, "avx", "avx2");
     pub fn get() -> bool { inner::get() }
