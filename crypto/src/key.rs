@@ -831,9 +831,12 @@ impl FromStr for LegacyPublicKey {
     fn from_str(s: &str) -> Result<Self, ParsePublicKeyError> {
         fn try_decode<const N: usize>(s: &str) -> Result<LegacyPublicKey, ParsePublicKeyError> {
             match hex::decode_to_array::<N>(s) {
-                Ok(bytes) => LegacyPublicKey::from_slice(&bytes).map_err(ParsePublicKeyError::Encoding),
-                Err(DecodeFixedLengthBytesError::InvalidChar(e)) => Err(ParsePublicKeyError::InvalidChar(e)),
-                Err(DecodeFixedLengthBytesError::InvalidLength(_)) => Err(ParsePublicKeyError::InvalidHexLength(s.len())),
+                Ok(bytes) =>
+                    LegacyPublicKey::from_slice(&bytes).map_err(ParsePublicKeyError::Encoding),
+                Err(DecodeFixedLengthBytesError::InvalidChar(e)) =>
+                    Err(ParsePublicKeyError::InvalidChar(e)),
+                Err(DecodeFixedLengthBytesError::InvalidLength(_)) =>
+                    Err(ParsePublicKeyError::InvalidHexLength(s.len())),
             }
         }
         try_decode::<33>(s).or_else(|e| match e {
