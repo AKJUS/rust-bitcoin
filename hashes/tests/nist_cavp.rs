@@ -35,6 +35,7 @@ macro_rules! nist_shavs_tests {
             }
 
             #[test]
+            #[cfg_attr(miri, ignore)]
             fn long_msg() {
                 let content = include_str!($long_file);
                 run_shavs_tests(content, hash_oneshot);
