@@ -101,7 +101,7 @@ crate::internal_macros::impl_op_for_references! {
     impl ops::Div<NonZeroU64> for Amount {
         type Output = Amount;
 
-        fn div(self, rhs: NonZeroU64) -> Self::Output { Self::from_sat(self.to_sat() / rhs.get()).expect("construction after division cannot fail") }
+        fn div(self, rhs: NonZeroU64) -> Self::Output { Self::from_sat(self.to_sat() / rhs).expect("construction after division cannot fail") }
     }
     impl ops::Div<NonZeroU64> for NumOpResult<Amount> {
         type Output = NumOpResult<Amount>;
@@ -116,7 +116,7 @@ crate::internal_macros::impl_op_for_references! {
     impl ops::Rem<NonZeroU64> for Amount {
         type Output = Amount;
 
-        fn rem(self, modulus: NonZeroU64) -> Self::Output { Self::from_sat(self.to_sat() % modulus.get()).expect("construction from remainder cannot fail") }
+        fn rem(self, modulus: NonZeroU64) -> Self::Output { Self::from_sat(self.to_sat() % modulus).expect("construction from remainder cannot fail") }
     }
     impl ops::Rem<u64> for NumOpResult<Amount> {
         type Output = NumOpResult<Amount>;

@@ -5,7 +5,7 @@ resolver = "2"
 
 [workspace.metadata]
 rbmt.version = "0.5.3"
-rbmt.toolchains.nightly = "nightly-2026-07-02"
+rbmt.toolchains.nightly = "nightly-2026-09-05"
 rbmt.toolchains.stable = "1.98.1"
 
 [workspace.lints.rust]
@@ -33,7 +33,7 @@ copy_iterator = "warn"
 default_trait_access = "warn"
 doc_link_with_quotes = "warn"
 doc_markdown = "warn"
-empty_enums = "warn"
+empty_enums = "allow" # Uninstantiable enums are used to mark types, such as Block<Checked> and Block<Unchecked>.
 enum_glob_use = "warn"
 expl_impl_clone_on_copy = "warn"
 explicit_deref_methods = "warn"
