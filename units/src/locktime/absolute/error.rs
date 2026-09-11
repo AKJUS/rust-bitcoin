@@ -446,4 +446,16 @@ mod tests {
             assert!(e.source().is_some());
         }
     }
+
+    #[test]
+    #[cfg(feature = "alloc")]
+    fn parse_error_display_escapes_control_characters() {
+        let height =
+            Height::from_str("1\nFORGED: privileged action succeeded").unwrap_err().to_string();
+        let time = MedianTimePast::from_str("\u{1b}[2JFORGED").unwrap_err().to_string();
+
+        for rendered in [height, time] {
+            assert!(!rendered.chars().any(char::is_control));
+        }
+    }
 }

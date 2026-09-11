@@ -812,6 +812,20 @@ mod tests {
 
     #[test]
     #[cfg(feature = "alloc")]
+    fn missing_prefix_error_display_escapes_control_characters() {
+        let e = hex_u32_prefixed("bad\nlevel=INFO accepted=true").unwrap_err().to_string();
+        assert!(!e.chars().any(char::is_control));
+    }
+
+    #[test]
+    #[cfg(feature = "alloc")]
+    fn contains_prefix_error_display_escapes_control_characters() {
+        let e = hex_u32_unprefixed("0x1\nlevel=INFO accepted=true").unwrap_err().to_string();
+        assert!(!e.chars().any(char::is_control));
+    }
+
+    #[test]
+    #[cfg(feature = "alloc")]
     fn error_display_is_non_empty() {
         // ParseIntError - parse invalid integer
         let e = int_from_str::<u32>("not_a_number").unwrap_err();
